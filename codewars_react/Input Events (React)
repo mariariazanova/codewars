@@ -1,0 +1,67 @@
+/*
+You should implement an simple Input component using React and it should contain:
+
+an input field with placeholder
+an onChange action changing the value in state
+an onClick action selecting the entire entered text
+Further reading:
+
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange
+*/
+
+import React from "react";
+
+export default class NameInput extends React.Component {
+  state = {
+    value: ""
+  };
+
+  handleInputChange = (e) => {
+    this.setState({ value: e.target.value });
+  };
+
+  handleInputClick = (e) => {
+    e.target.setSelectionRange(0, this.state.value.length);
+  };
+
+  render() {
+    return (
+      <label className="header-name">
+        <input
+          placeholder="Untitled"
+          value={this.state.value}
+          onChange={this.handleInputChange}
+          onClick={this.handleInputClick}
+        />
+      </label>
+    );
+  }
+}
+
+/*
+variant 2
+
+import React, { useState } from "react";
+
+export default function NameInput() {
+  
+  const [state, setState] = useState('');
+  
+  const handleChange = (event) => {
+    setState(event.target.value);
+  }
+    
+  return (
+    <label className="header-name">
+      <input 
+        type="text"
+        value={state}
+        onChange={handleChange}
+        onClick={(e) => e.target.setSelectionRange(0, state.length)}
+        placeholder="Untitled"
+      />
+    </label>
+  );
+}
+
+*/
