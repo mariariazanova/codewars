@@ -1,0 +1,119 @@
+/*
+Part 1
+
+The Counter component keeps track of a count value in state. There are two buttons which call methods increment() and decrement(). Write these methods so the counter value is incremented or decremented by 1 when the appropriate button is clicked. Also, create a reset() method so when the reset button is clicked, the count is set to 0. The default value for counter should be set as 0.
+
+Part 2
+
+Each time the counter changes, the color of the top of the border should be changed as well. Please, use getRandomColor function for choosing the color. The default value for color should be set as null.
+
+Note: Make sure you don’t modify the classNames of the buttons.
+
+*/
+
+import React from "react";
+
+const colors = ['red', 'green', 'blue', 'pink', 'yellow', 'gray', 'white', 'black', 'almond', 'brown'];
+
+let isFirst = true;
+const color = 'red';
+
+
+export const getRandomColor = () => {
+   const randomIndex = Math.floor(Math.random() * 10);
+   return colors[randomIndex];
+ };
+
+
+export default class Counter extends React.Component {
+  state = {
+    counter: 0,
+    color: null
+  };
+  
+    
+  increment = (e) => {
+    this.setState({ counter: this.state.counter + 1,
+                  color: getRandomColor()})
+                  
+  };
+  
+  decrement = (e) => {
+    this.setState({ counter: this.state.counter - 1,
+                    color: getRandomColor()})
+  };
+  
+  reset = (e) => {
+    this.setState({ counter: 0 });
+  };
+    
+    componentDidMount() {
+    if (isFirst) {
+      isFirst = false;
+    } else {
+      this.setState({color: getRandomColor()});
+    }
+  }
+
+  
+  
+ render() {
+   
+     
+    return (
+      <div style={{ borderTop: `10px solid ${this.state.color}` }}>
+			<div className="value">{this.state.counter}</div>
+			<button className="increment" onClick={this.increment}>
+				+
+			</button>
+			<button className="decrement" onClick={this.decrement}>
+				-
+			</button>
+      <button className="reset" onClick={this.reset}>
+				reset
+			</button>
+		</div>     
+      
+      );
+  }
+  
+}
+
+/*
+
+import React, { useState, useEffect } from "react";
+
+const colors = ['red', 'green', 'blue', 'pink', 'yellow', 'gray', 'white', 'black', 'almond', 'brown'];
+
+export const getRandomColor = () => {
+  const randomIndex = Math.floor(Math.random() * 10);
+  return colors[randomIndex];
+}
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  const [color, setColor] = useState(null);
+  
+  const increment = () => setCount(prev => prev + 1);
+  const decrement = () => setCount(prev => prev - 1);
+  const reset = () => setCount(0);
+  
+  useEffect(() => setColor(getRandomColor()), [count]);
+  
+  return (
+    <div style={{ borderTop: `10px solid ${color}` }}>
+      <div className="value">{count}</div>
+      <button className="increment" onClick={increment}>
+        -
+      </button>
+      <button className="decrement" onClick={decrement}>
+        +
+      </button>
+      <button className="reset" onClick={reset}>
+        reset
+      </button>
+    </div>
+  );
+}
+
+*/
