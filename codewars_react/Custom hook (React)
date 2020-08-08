@@ -1,0 +1,59 @@
+/*
+You should write an custom React hook that uses the navigator.onLine property to check the network status to determine if the user is connected to the internet or not.
+
+Requrements:
+
+name the hook useOnlineStatus
+it returns a boolean value (true/false for ‘online’/’offline’)
+it uses navigator.onLine property as a default
+it listens window online/offline events to toggle the state
+it stores the current network status in state
+it removes the listeners on unmount
+*/
+
+import React from 'react';
+import { useState, useEffect } from 'react';
+
+function getOnlineStatus() {
+  return typeof navigator !== "undefined" &&
+    typeof navigator.onLine === "boolean"
+    ? navigator.onLine
+    : true;
+}
+
+function useOnlineStatus() {
+
+  let [online, setOnline] = useState(getOnlineStatus());
+  
+  function goOnline() {
+    setOnline(true);
+  }
+  
+  function goOffline() {
+    setOnline(false);
+  }
+  
+  useEffect(() => {
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+
+  return online
+}
+
+
+
+export default function App() {
+    const online = useOnlineStatus();
+
+    return (
+        <div>
+            Network {online ? "Online" : "Offline"}
+        </div>
+    )
+}
+
