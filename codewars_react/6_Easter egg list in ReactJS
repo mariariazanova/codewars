@@ -22,16 +22,13 @@ More on Lists and Keys
 import React from 'react';
 
 export const EggList = (props) => {
-  
    const list = props.eggs.map((e, i) => <EasterEgg name={e} key={i} />);
    return <ul>{list}</ul>;
-  
 };
 
 export const EasterEgg = (props) => {
-  
-  return <li>props.name </li>;
-  
+  if (props.name) 
+    return <li>{props.name}</li>;
 };
 
 /*
