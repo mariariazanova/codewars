@@ -1,0 +1,134 @@
+/*
+Description:
+Star Trek The United Federation of Planets is testing out their new transporter technology.
+
+Statey needs to successfully transport three people from a planet to the Enterprise and three other people from Enterprise to the planet. (With none of them dying).
+
+There are three components defined for you Universe, Planet and Starship but each of them of have missing features to transport a person.
+
+The Planet and Star ship have inhabitants only known to themselves.
+
+Clicking a transport button for a person should trigger the tranport process
+When being transported a person should be removed from one inhabitants list to the other. e.g A person from a Planet should be removed and added to the Star ship.
+The Planet and Starship should have a transport prop for "Lifting state up"
+The Planet and Starship will need componentWillReceiveProps to update Person passed through
+Good luck and have fun!
+
+Paired with Rob Adams
+*/
+
+const React = require("react");
+
+class Universe extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      intransitToPlanet: null,
+      intransitToStarShip: null
+    };
+     this.transportToStarship = this.transportToStarship.bind(this);
+    this.transportToPlanet = this.transportToPlanet.bind(this);
+  }
+  
+   transportToPlanet(person) {
+    this.setState({ intransitToPlanet: person });
+  }
+  
+  transportToStarship(person) {
+    this.setState({ intransitToStarShip: person });
+  }
+
+  render() {
+    return (
+      <div className="Universe">
+        <h1>Universe</h1>
+        <Starship
+          person={this.state.intransitToStarShip}
+          transport={this.transportToPlanet} 
+        />
+        <Planet
+          person={this.state.intransitToPlanet}
+          transport={this.transportToStarship} 
+        />
+      </div>
+    );
+  }
+}
+
+class Starship extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { inhabitants: ["Lauras", "Tobin", "Robot"] };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.person !== this.props.person) {
+      this.setState({
+        inhabitants: [...this.state.inhabitants, nextProps.person]
+      });
+    }
+  }
+  
+  transport(person){
+    return () => {
+    this.setState({inhabitants: this.state.inhabitants.filter(name => person != name)});
+    this.props.transport(person);
+    };
+    
+  }
+  
+  
+  render() {
+    return (
+      <div className="Starship">
+        <h3>Starship Finderprise</h3>
+        {this.state.inhabitants.map((name) => {
+          return (
+            <button key={name} onClick={this.transport(name)}>
+              Transport {name}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+class Planet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { inhabitants: ["Attilus", "Dennix", "Mobius"] };
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.person !== this.props.person) {
+      this.setState({
+        inhabitants: [...this.state.inhabitants, nextProps.person]
+      });
+    }
+  }
+  
+  
+  transport(person){
+    return () => {
+    this.setState({inhabitants: this.state.inhabitants.filter(name => person != name)});
+    this.props.transport(person);
+    };
+    
+  }
+
+  render() {
+    return (
+      <div className="Planet">
+        <h3>Planet Earth</h3>
+        {this.state.inhabitants.map((name) => {
+          return (
+            <button key={name} onClick={this.transport(name)}>
+              Transport {name}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+}
