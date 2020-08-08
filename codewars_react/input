@@ -1,0 +1,45 @@
+
+
+import React from "react";
+
+class NameInput extends React.Component {
+  constructor(props) {
+    super(props)
+    this.titleChange = this.titleChange.bind(this)
+    this.selectText = this.selectText.bind(this)
+    this.state = {value:''}
+  }
+  
+  titleChange = (EO) =>{
+     this.setState({value:EO.target.value});
+  }
+  
+  selectText = (EO) => {
+   //const input = document.getElementById('text-box');  
+     //input.focus();
+    //input.setSelectionRange(0, input.value.length);
+    //EO.target.focus();
+    //EO.target.setSelectionRange(0, EO.target.value.length);
+  }
+  
+ //selectText  = (EO) =>{ 
+   //     EO.target.select()
+//}
+  
+
+render() {
+  
+	return (
+    <>
+		<label className="header-name">
+			<input value={this.state.value} id="text-box" onChange={this.titleChange} onclick={this.selectText}
+				placeholder="Untitled"
+			/>
+		</label>
+
+</>
+	);
+  }
+}
+
+export default NameInput;
